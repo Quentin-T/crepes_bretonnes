@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Article(models.Model):
     titre = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
     auteur = models.CharField(max_length=42)
     contenu = models.TextField(null=True)
     date = models.DateTimeField(default=timezone.now, verbose_name="Date de parution")
@@ -58,3 +60,25 @@ class Offre(models.Model):
 
     def __str__(self):
         return "{0} vendu par {1}".format(self.produit, self.vendeur)
+
+class Contact(models.Model):
+    nom = models.CharField(max_length=255)
+    adresse = models.TextField()
+    photo = models.ImageField(upload_to='photos')
+
+    def __str__(self):
+        return self.nom
+
+class Profil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    site_web = models.URLField(blank=True)
+    avatar=models.ImageField(null=True, blank=True, upload_to="avatar/")
+    signature = models.TextField(blank=True)
+    inscrit_newsletter = models.BooleanField(default=False, blank=False)
+
+    class Meta:
+        verbose_name = "profil"
+        ordering = ['user']
+
+    def __str__(self):
+        return "Profil de {0}".format(self.user.username)

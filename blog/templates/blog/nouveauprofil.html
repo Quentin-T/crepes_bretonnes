@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Creer un profil</h1>
+
+    {% if envoi %}<p>Nouveau profil créé !</p>{% endif %}
+
+    <p>
+        <form method="post" enctype="multipart/form-data" action="{%  url "nouveauprofil"%}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit"/>
+        </form>
+
+</body>
+</html>
